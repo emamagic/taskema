@@ -48,12 +48,14 @@ go.work
 
 .gitlab-ci.yml
 go.*
-/bin
+/cmd/bin
 /config
 config.yml
 /datasource/mysql/dbconfig.yml
 /datasource/mysql/migrator
+/datasource/mysql/migrations
 Makefile
+
 
 
 
