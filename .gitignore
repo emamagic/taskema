@@ -55,7 +55,7 @@ config.yml
 /datasource/mysql/migrator
 /datasource/mysql/migrations
 Makefile
-
+/uploads
 
 
 
