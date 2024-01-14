@@ -11,7 +11,6 @@ import (
 	"taskema/adapter/useradapter"
 	"taskema/config"
 	"taskema/datasource/mysql"
-	"taskema/datasource/mysql/migrator"
 	"taskema/delivery/httpserver"
 	"taskema/delivery/httpserver/authhandler"
 	"taskema/delivery/httpserver/boardhandler"
@@ -59,10 +58,6 @@ func main() {
 	if pErr != nil {
 		log.Fatal("failed to connect to mysql: ", pErr)
 	}
-
-	// TODO - add command for migration
-	mgr := migrator.New(cfg.MySql)
-	mgr.Up()
 
 	defer func() {
 		if err := mysql.Conn().Close(); err != nil {
