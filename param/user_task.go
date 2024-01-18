@@ -2,20 +2,21 @@ package param
 
 import (
 	"taskema/entity"
-	"time"
 )
 
 type UserTaskCreateRequest struct {
-	CreatorUserID uint    `json:"creator_user_id"`
-	Title         string  `json:"title"`
-	Avatar        *string `json:"avatar"`
-	Description   string  `json:"description"`
-	BoardID       uint    `json:"board_id"`
+	CreatorUserID  uint    `json:"creator_user_id"`
+	Title          string  `json:"title"`
+	Avatar         *string `json:"avatar"`
+	Description    string  `json:"description"`
+	BoardID        uint    `json:"board_id"`
+	AssignedUserID uint    `json:"assigned_user_id"`
+	DueDate        int64   `json:"due_date"`
 }
 
 type UserTaskGetAllRequest struct {
 	UserID  uint `json:"user_id"`
-	BoardID uint  `json:"board_id"`
+	BoardID uint `json:"board_id"`
 }
 
 type UserTaskDeleteRequest struct {
@@ -23,17 +24,17 @@ type UserTaskDeleteRequest struct {
 }
 
 type UserTaskResponse struct {
-	ID             uint      `json:"id"`
-	Title          string    `json:"title"`
-	Avatar         *string   `json:"avatar"`
-	CreatorUserID  uint      `json:"creator_user_id"`
-	Description    string    `json:"description"`
-	DueDate        time.Time `json:"due_date"`
-	BoardID        uint      `json:"board_id"`
-	AssignedUserID uint      `json:"assigned_user_id"`
-	Priority       uint      `json:"priority"`
-	CreateAt       time.Time `json:"create_at"`
-	UpdateAt       time.Time `json:"update_at"`
+	ID             uint    `json:"id"`
+	Title          string  `json:"title"`
+	Avatar         *string `json:"avatar"`
+	CreatorUserID  uint    `json:"creator_user_id"`
+	Description    string  `json:"description"`
+	DueDate        *int64  `json:"due_date"`
+	BoardID        uint    `json:"board_id"`
+	AssignedUserID uint    `json:"assigned_user_id"`
+	Priority       uint    `json:"priority"`
+	CreateAt       int64   `json:"create_at"`
+	UpdateAt       int64   `json:"update_at"`
 }
 
 func TaskFromEntities(entities []entity.Task) []UserTaskResponse {
@@ -50,8 +51,8 @@ func TaskFromEntities(entities []entity.Task) []UserTaskResponse {
 			BoardID:        task.BoardID,
 			AssignedUserID: task.AssignedUserID,
 			Priority:       task.Priority,
-			CreateAt:       task.CreateAt,
-			UpdateAt:       task.UpdateAt,
+			CreateAt:       task.CreateAt.Unix(),
+			UpdateAt:       task.UpdateAt.Unix(),
 		}
 		list = append(list, resp)
 	}

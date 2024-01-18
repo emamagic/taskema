@@ -8,7 +8,7 @@ type Task struct {
 	Avatar         *string
 	CreatorUserID  uint
 	Description    string
-	DueDate        time.Time
+	DueDate        *int64
 	BoardID        uint
 	AssignedUserID uint
 	Priority       uint

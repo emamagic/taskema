@@ -29,6 +29,10 @@ RUN rm /usr/local/bin/dockerize-linux-amd64-v0.6.1.tar.gz
 
 EXPOSE 8080
 
-CMD ["dockerize", "-wait", "tcp://mysql:3306", "-timeout", "30s", "sh", "-c", "sql-migrate up -env=production -config=/go/src/app/datasource/mysql/dbconfig.yml && /go/src/app/cmd/bin/main"]
+CMD ["dockerize", \
+    "-wait", "tcp://mysql:3306", \
+    "-timeout", "30s", \ 
+    "sh", "-c", \
+    "sql-migrate up -env=production -config=/go/src/app/datasource/mysql/dbconfig.yml && /go/src/app/cmd/bin/main"]
 
 

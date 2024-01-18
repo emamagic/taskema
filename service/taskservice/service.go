@@ -28,11 +28,13 @@ func (s Service) CreateTask(req param.UserTaskCreateRequest) (uint, error) {
 	op := "taskservice.CreateTask"
 
 	task := entity.Task{
-		Title:         req.Title,
-		Avatar:        req.Avatar,
-		CreatorUserID: req.CreatorUserID,
-		Description:   req.Description,
-		BoardID:       req.BoardID,
+		Title:          req.Title,
+		Avatar:         req.Avatar,
+		CreatorUserID:  req.CreatorUserID,
+		Description:    req.Description,
+		BoardID:        req.BoardID,
+		AssignedUserID: req.AssignedUserID,
+		DueDate:        &req.DueDate,
 	}
 
 	id, err := s.repo.CreateTask(task)

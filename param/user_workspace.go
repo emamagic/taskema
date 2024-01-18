@@ -2,7 +2,6 @@ package param
 
 import (
 	"taskema/entity"
-	"time"
 )
 
 type UserWorkspaceCreateRequest struct {
@@ -13,7 +12,7 @@ type UserWorkspaceCreateRequest struct {
 }
 
 type UserWorkspaceGetAllRequest struct {
-	UserID uint `json:"user_id"`
+	UserID         uint `json:"user_id"`
 	OrganizationID uint `json:"organization_id"`
 }
 
@@ -22,14 +21,14 @@ type UserWorkspaceDeleteRequest struct {
 }
 
 type UserWorkspaceResponse struct {
-	ID             uint      `json:"id"`
-	Title          string    `json:"title"`
-	Avatar         *string   `json:"avatar"`
-	CreatorUserID  uint      `json:"creator_user_id"`
-	OrganizationID uint      `json:"organization_id"`
-	Priority       uint      `json:"priority"`
-	CreateAt       time.Time `json:"create_at"`
-	UpdateAt       time.Time `json:"update_at"`
+	ID             uint    `json:"id"`
+	Title          string  `json:"title"`
+	Avatar         *string `json:"avatar"`
+	CreatorUserID  uint    `json:"creator_user_id"`
+	OrganizationID uint    `json:"organization_id"`
+	Priority       uint    `json:"priority"`
+	CreateAt       int64   `json:"create_at"`
+	UpdateAt       int64   `json:"update_at"`
 }
 
 func WorkspaceFromEntities(entities []entity.Workspace) []UserWorkspaceResponse {
@@ -43,8 +42,8 @@ func WorkspaceFromEntities(entities []entity.Workspace) []UserWorkspaceResponse 
 			CreatorUserID:  workspace.CreatorUserID,
 			OrganizationID: workspace.OrganizationID,
 			Priority:       workspace.Priority,
-			CreateAt:       workspace.CreateAt,
-			UpdateAt:       workspace.UpdateAt,
+			CreateAt:       workspace.CreateAt.Unix(),
+			UpdateAt:       workspace.UpdateAt.Unix(),
 		}
 		list = append(list, resp)
 	}

@@ -44,7 +44,11 @@ func (h Handler) getAllTaskByBoardID(c echo.Context) error {
 		})
 	}
 
-	resp, err := h.taskservice.GetAllTaskByBoardID(param.UserTaskGetAllRequest{BoardID: uint(boardID)})
+	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
+	resp, err := h.taskservice.GetAllTaskByBoardID(param.UserTaskGetAllRequest{
+		BoardID: uint(boardID),
+		UserID:  claims.UserID,
+	})
 	if err != nil {
 
 		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{

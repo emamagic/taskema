@@ -19,8 +19,8 @@ func New(db *mysql.MYSQL) Task {
 func (repo *taskSqlRepo) CreateTask(task entity.Task) (uint, error) {
 	op := "tasksql.CreateTask"
 
-	result, err := repo.db.Conn().Exec("INSERT INTO tasks (title, avatar, creator_user_id, description, board_id) VALUES (?, ?, ?, ?, ?)",
-		task.Title, task.Avatar, task.CreatorUserID, task.Description, task.BoardID)
+	result, err := repo.db.Conn().Exec("INSERT INTO tasks (title, avatar, creator_user_id, description, board_id, assigned_user_id, due_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		task.Title, task.Avatar, task.CreatorUserID, task.Description, task.BoardID, task.AssignedUserID, task.DueDate)
 	if err != nil {
 
 		return 0, richerror.New(op).WithError(err).WithCode(richerror.CodeUnexpected)

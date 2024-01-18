@@ -52,7 +52,6 @@ go.*
 /config
 config.yml
 /datasource/mysql/dbconfig.yml
-/datasource/mysql/migrations
 Makefile
 /uploads
 
