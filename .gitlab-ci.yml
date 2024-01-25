@@ -31,7 +31,7 @@ deploy:
   image: ubuntu:latest
   stage: deploy
   only:
-   - main
+    - main
   before_script:
     - apt-get -yq update
     - apt-get -yqq install ssh
