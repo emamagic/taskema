@@ -1,5 +1,5 @@
-build:
-  before_script:
+build_job:
+  script:
     - echo "hello"
 # stages:
 #   - build
