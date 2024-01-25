@@ -13,10 +13,12 @@ variables:
 build:
   image: docker
   stage: build
+  only:
+    - main
   services: 
     - docker:dind
   before_script: 
-    - echo $PAT | winpty docker login $REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
+    - echo $PAT | docker login $REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
     - docker build -t $REGISTRY/$IMAGE_NAME .
     - docker push $REGISTRY/$IMAGE_NAME
