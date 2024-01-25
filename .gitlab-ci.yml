@@ -6,7 +6,6 @@ stages:
   - deploy
 
 variables:
-  REGISTRY: registry.taskema.ir
   IMAGE_NAME: $GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest
 
 
@@ -18,10 +17,10 @@ build:
   services: 
     - docker:dind
   before_script: 
-    - echo $PAT | docker login $REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
+    - echo $PAT | docker login $CI_REGISTRY --password-stdin
   script:
-    - docker build -t $REGISTRY/$IMAGE_NAME .
-    - docker push $REGISTRY/$IMAGE_NAME
+    - docker build -t $CI_REGISTRY/$IMAGE_NAME .
+    - docker push $CI_REGISTRY/$IMAGE_NAME
 
 deploy:
   image: ubuntu:latest
