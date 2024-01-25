@@ -49,7 +49,7 @@ go.work
 #/config/default.go
 #config.yml
 #/datasource/mysql/dbconfig.yml
-go.*
+#go.*
 Makefile
 /uploads
 

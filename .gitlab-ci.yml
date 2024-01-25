@@ -6,18 +6,22 @@ stages:
   - deploy
 
 variables:
-  IMAGE_NAME: $GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest
-
+  IMAGE_NAME: $GITLAB_GROUP/$CI_PROJECT_NAME:latest
 
 build:
-  image: docker
   stage: build
   only:
     - main
-  services: 
-    - docker:dind
-  before_script: 
-    - echo $PAT | docker login $CI_REGISTRY --password-stdin
+  image: docker:25.0.1
+  services:
+    - name: docker:25.0.1-dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
     - docker build -t $CI_REGISTRY/$IMAGE_NAME .
     - docker push $CI_REGISTRY/$IMAGE_NAME
@@ -26,7 +30,7 @@ deploy:
   image: ubuntu:latest
   stage: deploy
   only:
-   - main
+    - main
   before_script:
     - apt-get -yq update
     - apt-get -yqq install ssh
