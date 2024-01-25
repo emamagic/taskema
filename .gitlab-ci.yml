@@ -37,8 +37,8 @@ deploy:
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config;
-  - cat "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-  - cat "$SSH_PUBLIC_KEY" | base64 -d > ~/.ssh/id_rsa.pub
+  - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+  - echo "$SSH_PUBLIC_KEY" | base64 -d > ~/.ssh/id_rsa.pub
   - chmod 600 ~/.ssh/id_rsa;
   - chmod 764 ~/.ssh/id_rsa.pub;
   - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
