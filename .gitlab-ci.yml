@@ -40,9 +40,9 @@ deploy:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config;
   - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
   - echo "$SSH_PUBLIC_KEY" | base64 -d > ~/.ssh/id_rsa.pub
+  - chmod 700 ~/.ssh;
   - chmod 600 ~/.ssh/id_rsa;
   - chmod 764 ~/.ssh/id_rsa.pub;
-  - touch ~/.ssh/known_hosts;
   - chmod 600 ~/.ssh/known_hosts;
   - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
