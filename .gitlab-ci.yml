@@ -33,6 +33,7 @@ deploy:
   only:
     - main
   before_script:
+  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
