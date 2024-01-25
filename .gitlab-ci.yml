@@ -17,7 +17,10 @@ build:
   services:
     - name: docker:25.0.1-dind
       alias: docker
-
+  variables:
+      DOCKER_HOST: tcp://docker:2375
+      DOCKER_TLS_CERTDIR: ""
+      DOCKER_DRIVER: overlay2
   before_script: 
     - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
