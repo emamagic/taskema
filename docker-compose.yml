@@ -2,9 +2,7 @@ version: '3.7'
 
 services:
   golang:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: registry.taskema.ir/taskema/taskema_back_go:latest
     ports:
       - "8080:8080"
     container_name: taskema

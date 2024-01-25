@@ -1,29 +1,40 @@
 default:
   tags:
     - golang
+stages:
+  - build
+  - deploy
 
-build_job:
+variables:
+  REGISTRY: registry.taskema.ir
+  IMAGE_NAME: $GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest
+
+
+build:
+  image: docker
+  stage: build
+  only:
+    - main
+  services: 
+    - docker:dind
+  before_script: 
+    - echo $PAT | docker login $REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
-    - echo "hello"
-# stages:
-#   - build
-#   - deploy
+    - docker build -t $REGISTRY/$IMAGE_NAME .
+    - docker push $REGISTRY/$IMAGE_NAME
 
-# variables:
-#   DOCKER_REGISTRY: $CI_REGISTRY
-#   IMAGE_NAME: $CI_REGISTRY_IMAGE/your-app-name
-
-# before_script:
-#   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $DOCKER_REGISTRY
-
-# build:
-#   stage: build
-#   script:
-#     - docker build -t $IMAGE_NAME .
-#     - docker push $IMAGE_NAME
-
-# deploy:
-#   stage: deploy
-#   script:
-#     - docker-compose pull
-#     - docker-compose up -d
+deploy:
+  image: ubuntu:latest
+  stage: deploy
+  only:
+   - main
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  script:
+    - ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose pull && docker-compose up -d && exit"
+  after_script:
+    - rm -rf ~/.ssh
