@@ -15,7 +15,7 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin http://82.115.16.174/taskema/taskema_back_go.git
+git remote add origin https://git.taskema.ir/taskema/taskema_back_go.git
 git branch -M main
 git push -uf origin main
 ```
