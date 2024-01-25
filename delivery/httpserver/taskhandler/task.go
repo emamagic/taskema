@@ -46,7 +46,7 @@ func (h Handler) getAllTaskByBoardID(c echo.Context) error {
 
 	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
 	resp, err := h.taskservice.GetAllTaskByBoardID(param.UserTaskGetAllRequest{
-		BoardID: uint(boardID),
+		WorkspaceID: uint(boardID),
 		UserID:  claims.UserID,
 	})
 	if err != nil {

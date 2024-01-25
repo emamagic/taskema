@@ -4,10 +4,15 @@ type FileRepo interface {
 	DoesFileExist(hash string) (bool, error)
 }
 
-type Validation struct {
-	fileRepo FileRepo
+type OrgRepo interface {
+	DoesOrganizationExist(organizationID uint) (bool, error)
 }
 
-func New(fileRepo FileRepo) Validation {
-	return Validation{fileRepo: fileRepo}
+type Validation struct {
+	fileRepo FileRepo
+	orgRepo  OrgRepo
+}
+
+func New(fileRepo FileRepo, orgRepo OrgRepo) Validation {
+	return Validation{fileRepo: fileRepo, orgRepo: orgRepo}
 }

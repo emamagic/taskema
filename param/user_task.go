@@ -9,14 +9,14 @@ type UserTaskCreateRequest struct {
 	Title          string  `json:"title"`
 	Avatar         *string `json:"avatar"`
 	Description    string  `json:"description"`
-	BoardID        uint    `json:"board_id"`
+	ColumnID       uint    `json:"column_id"`
 	AssignedUserID uint    `json:"assigned_user_id"`
 	DueDate        int64   `json:"due_date"`
 }
 
 type UserTaskGetAllRequest struct {
-	UserID  uint `json:"user_id"`
-	BoardID uint `json:"board_id"`
+	UserID      uint `json:"user_id"`
+	WorkspaceID uint `json:"workspace_id"`
 }
 
 type UserTaskDeleteRequest struct {
@@ -30,7 +30,7 @@ type UserTaskResponse struct {
 	CreatorUserID  uint    `json:"creator_user_id"`
 	Description    string  `json:"description"`
 	DueDate        *int64  `json:"due_date"`
-	BoardID        uint    `json:"board_id"`
+	ColumnID       uint    `json:"column_id"`
 	AssignedUserID uint    `json:"assigned_user_id"`
 	Priority       uint    `json:"priority"`
 	CreateAt       int64   `json:"create_at"`
@@ -48,7 +48,7 @@ func TaskFromEntities(entities []entity.Task) []UserTaskResponse {
 			CreatorUserID:  task.CreatorUserID,
 			Description:    task.Description,
 			DueDate:        task.DueDate,
-			BoardID:        task.BoardID,
+			ColumnID:       task.ColumnID,
 			AssignedUserID: task.AssignedUserID,
 			Priority:       task.Priority,
 			CreateAt:       task.CreateAt.Unix(),

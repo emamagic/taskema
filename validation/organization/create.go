@@ -5,15 +5,13 @@ import (
 	"taskema/pkg/richerror"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
-
 
 func (v Validation) CreateOrganization(req param.UserOrganizationCreateRequest) error {
 	op := "orgvalidation.CreateOrganization"
 
 	vErr := validation.ValidateStruct(&req,
-		validation.Field(&req.Title, validation.Required, is.Alpha, validation.Length(3, 10)),
+		validation.Field(&req.Title, validation.Required, validation.Length(3, 10)),
 	)
 
 	if vErr != nil {
@@ -22,6 +20,12 @@ func (v Validation) CreateOrganization(req param.UserOrganizationCreateRequest) 
 	}
 
 	if req.Avatar != nil {
+
+		if *req.Avatar == "" {
+			return richerror.New(op).
+				WithMessage(richerror.MsgErrorAvatarNotValid).
+				WithCode(richerror.CodeNotFound)
+		}
 
 		isAvatarExist, aErr := v.fileRepo.DoesFileExist(*req.Avatar)
 		if aErr != nil {
@@ -35,7 +39,6 @@ func (v Validation) CreateOrganization(req param.UserOrganizationCreateRequest) 
 		}
 
 	}
-
 
 	return nil
 }

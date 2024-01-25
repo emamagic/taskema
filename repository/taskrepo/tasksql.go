@@ -20,7 +20,7 @@ func (repo *taskSqlRepo) CreateTask(task entity.Task) (uint, error) {
 	op := "tasksql.CreateTask"
 
 	result, err := repo.db.Conn().Exec("INSERT INTO tasks (title, avatar, creator_user_id, description, board_id, assigned_user_id, due_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-		task.Title, task.Avatar, task.CreatorUserID, task.Description, task.BoardID, task.AssignedUserID, task.DueDate)
+		task.Title, task.Avatar, task.CreatorUserID, task.Description, task.ColumnID, task.AssignedUserID, task.DueDate)
 	if err != nil {
 
 		return 0, richerror.New(op).WithError(err).WithCode(richerror.CodeUnexpected)
@@ -58,7 +58,7 @@ func (repo *taskSqlRepo) GetAllTaskByBoardID(boardID uint) ([]entity.Task, error
 			&task.CreatorUserID,
 			&task.Description,
 			&task.DueDate,
-			&task.BoardID,
+			&task.ColumnID,
 			&task.AssignedUserID,
 			&task.Priority,
 			&task.CreateAt,
@@ -122,7 +122,7 @@ func (repo *taskSqlRepo) GetTaskByID(taskID uint) (entity.Task, error) {
 		&task.CreatorUserID,
 		&task.Description,
 		&task.DueDate,
-		&task.BoardID,
+		&task.ColumnID,
 		&task.AssignedUserID,
 		&task.Priority,
 		&task.CreateAt,

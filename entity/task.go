@@ -9,7 +9,7 @@ type Task struct {
 	CreatorUserID  uint
 	Description    string
 	DueDate        *int64
-	BoardID        uint
+	ColumnID       uint
 	AssignedUserID uint
 	Priority       uint
 	CreateAt       time.Time

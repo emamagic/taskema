@@ -32,7 +32,7 @@ func (s Service) CreateTask(req param.UserTaskCreateRequest) (uint, error) {
 		Avatar:         req.Avatar,
 		CreatorUserID:  req.CreatorUserID,
 		Description:    req.Description,
-		BoardID:        req.BoardID,
+		ColumnID:        req.ColumnID,
 		AssignedUserID: req.AssignedUserID,
 		DueDate:        &req.DueDate,
 	}
@@ -50,7 +50,7 @@ func (s Service) CreateTask(req param.UserTaskCreateRequest) (uint, error) {
 func (s Service) GetAllTaskByBoardID(req param.UserTaskGetAllRequest) ([]param.UserTaskResponse, error) {
 	op := "taskservice.GetAllTaskByBoardID"
 
-	tasks, err := s.repo.GetAllTaskByBoardID(req.BoardID)
+	tasks, err := s.repo.GetAllTaskByBoardID(req.UserID)
 	if err != nil {
 
 		return nil,

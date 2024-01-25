@@ -1,23 +1,21 @@
 version: '3.7'
 
 services:
-  # golang:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8080:8080"
-  #   container_name: taskema
-  #   volumes:
-  #     - ./uploads:/go/src/app/uploads
-  #   restart: always
-  #   depends_on:
-  #     - mysql
+  golang:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: taskema
+    volumes:
+      - ./uploads:/go/src/app/uploads
+    restart: always
+    depends_on:
+      - mysql
 
   mysql:
     image: mysql:latest
-    ports:
-      - "3306:3306"
     container_name: mysql_db
     volumes:
       - ./dbdata:/var/lib/taskema/mysql

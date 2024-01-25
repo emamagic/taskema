@@ -5,18 +5,19 @@ import (
 )
 
 type UserBoardCreateRequest struct {
-	CreatorUserID uint    `json:"creator_user_id"`
+	CreatorUserID uint
 	Title         string  `json:"title"`
 	Avatar        *string `json:"avatar"`
 	WorkspaceID   uint    `json:"workspace_id"`
 }
 
 type UserBoardGetAllRequest struct {
-	UserID      uint `json:"user_id"`
+	UserID      uint
 	WorkspaceID uint `json:"workspace_id"`
 }
 
 type UserBoardDeleteRequest struct {
+	UserID  uint
 	BoardID uint `json:"board_id"`
 }
 

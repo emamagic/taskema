@@ -9,6 +9,7 @@ import (
 	"taskema/adapter/fileadapter"
 	"taskema/adapter/orgadapter"
 	"taskema/adapter/useradapter"
+	"taskema/adapter/workspaceadapter"
 	"taskema/config"
 	"taskema/datasource/mysql"
 	"taskema/delivery/httpserver"
@@ -82,13 +83,14 @@ func main() {
 
 	orgRepo := orgrepo.New(mysql)
 	orgSvc := orgservice.New(orgRepo)
-	orgValidation := orgvalidation.New(fileAdapter)
 	orgAdapter := orgadapter.New(orgRepo)
+	orgValidation := orgvalidation.New(fileAdapter, orgAdapter)
 	orgHandler := orghandler.New(authSvc, cfg.Auth, orgSvc, orgValidation)
 
 	workspaceRepo := workspacerepo.New(mysql)
 	workspaceSvc := workspaceservice.New(workspaceRepo)
-	workspaceValidation := workspacevalidation.New(fileAdapter, orgAdapter)
+	workspaceAdapter := workspaceadapter.New(workspaceRepo)
+	workspaceValidation := workspacevalidation.New(fileAdapter, orgAdapter, workspaceAdapter)
 	workspaceHandler := workspacehandler.New(authSvc, cfg.Auth, workspaceSvc, workspaceValidation)
 
 	boardRepo := boardrepo.New(mysql)

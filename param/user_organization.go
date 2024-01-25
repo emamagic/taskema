@@ -11,10 +11,11 @@ type UserOrganizationCreateRequest struct {
 }
 
 type UserOrganizationGetAllRequest struct {
-	UserID uint `json:"user_id"`
+	UserID uint 
 }
 
 type UserOrganizationDeleteRequest struct {
+	UserID         uint 
 	OrganizationID uint `json:"organization_id"`
 }
 
