@@ -39,4 +39,6 @@ deploy:
     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
     - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
   script:
-    - ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose pull && docker-compose up -d && exit"
+    - ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
+  after_script:
+    - rm -rf ~/.ssh
