@@ -15,7 +15,8 @@ build:
   only:
     - main
   services: 
-    - docker:dind
+    - name: docker:dind
+      alias: docker
   before_script: 
     - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
