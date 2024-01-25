@@ -45,11 +45,11 @@ go.work
 
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode
 
+#/cmd/bin
+#/config/default.go
+#config.yml
+#/datasource/mysql/dbconfig.yml
 go.*
-/cmd/bin
-/config/default.go
-config.yml
-/datasource/mysql/dbconfig.yml
 Makefile
 /uploads
 
