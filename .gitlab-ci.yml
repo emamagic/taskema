@@ -6,7 +6,7 @@ stages:
   - deploy
 
 variables:
-  IMAGE_NAME: $GITLAB_USER_LOGIN/$CI_PROJECT_NAME:latest
+  IMAGE_NAME: $GITLAB_GROUP/$CI_PROJECT_NAME:latest
 
 
 build:
@@ -17,7 +17,7 @@ build:
   services: 
     - docker:dind
   before_script: 
-    - echo $PAT | docker login $CI_REGISTRY --password-stdin
+    - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
     - docker build -t $CI_REGISTRY/$IMAGE_NAME .
     - docker push $CI_REGISTRY/$IMAGE_NAME
