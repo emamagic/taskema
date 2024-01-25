@@ -17,6 +17,8 @@ build:
   services: 
     - name: docker:dind
       alias: docker
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh", "--storage-driver=overlay2"]
   before_script: 
     - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
