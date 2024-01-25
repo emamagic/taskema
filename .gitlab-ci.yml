@@ -28,19 +28,17 @@ build:
     - docker push $CI_REGISTRY/$IMAGE_NAME
 
 deploy:
-  image: ubuntu:latest
+  image: alpine:latest
   stage: deploy
   only:
     - main
   before_script:
-  - apt-get update -qq
-  - apt-get install -qq git
-  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
   - eval $(ssh-agent -s)
-  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - ssh-keyscan $VM_IPADDRESS >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
 
   script:
