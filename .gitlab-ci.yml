@@ -33,14 +33,15 @@ deploy:
   only:
     - main
   before_script:
-  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
   - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
-  - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-  - chmod 644 ~/.ssh/known_hosts
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config;
+  - cat "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+  - cat "$SSH_PUBLIC_KEY" | base64 -d > ~/.ssh/id_rsa.pub
+  - chmod 600 ~/.ssh/id_rsa;
+  - chmod 764 ~/.ssh/id_rsa.pub;
+  - ssh-keyscan -H git.taskema.ir >> ~/.ssh/known_hosts
 
   script:
     - ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
