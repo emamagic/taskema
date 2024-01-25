@@ -37,7 +37,7 @@ deploy:
     - apt-get -yqq install ssh
     - install -m 600 -D /dev/null ~/.ssh/id_rsa
     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
   script:
     - ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
   after_script:
