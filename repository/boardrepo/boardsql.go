@@ -16,7 +16,6 @@ func New(db *mysql.MYSQL) Board {
 }
 
 
-// TODO - duedate and priority not implemeted yet
 func (repo *boardSqlRepo) CreateBoard(board entity.Board) (uint, error) {
 	op := "boardsql.CreateBoard"
 

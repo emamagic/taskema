@@ -45,7 +45,7 @@ func (h Handler) getAllBoardByWorkspaceID(c echo.Context) error {
 
 	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
 	resp, err := h.boardSvc.GetAllBoardByWorkspaceID(param.UserBoardGetAllRequest{
-		UserID: claims.UserID,
+		UserID:      claims.UserID,
 		WorkspaceID: uint(workspaceID),
 	})
 
@@ -60,6 +60,7 @@ func (h Handler) getAllBoardByWorkspaceID(c echo.Context) error {
 }
 
 func (h Handler) deleteBoardByID(c echo.Context) error {
+	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
 
 	boardID, err := strconv.ParseUint(c.Param("board_id"), 10, 0)
 	if err != nil {
@@ -69,9 +70,11 @@ func (h Handler) deleteBoardByID(c echo.Context) error {
 		})
 	}
 
-	if err := h.boardSvc.DeleteBoardByID(param.UserBoardDeleteRequest{
+	req := param.UserBoardDeleteRequest{
 		BoardID: uint(boardID),
-		}); err != nil {
+		UserID:  claims.UserID,
+	}
+	if err := h.boardSvc.DeleteBoardByID(req); err != nil {
 
 		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{
 			"message": err.Error(),

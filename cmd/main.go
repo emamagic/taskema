@@ -9,9 +9,9 @@ import (
 	"taskema/adapter/fileadapter"
 	"taskema/adapter/orgadapter"
 	"taskema/adapter/useradapter"
+	"taskema/adapter/workspaceadapter"
 	"taskema/config"
 	"taskema/datasource/mysql"
-	"taskema/datasource/mysql/migrator"
 	"taskema/delivery/httpserver"
 	"taskema/delivery/httpserver/authhandler"
 	"taskema/delivery/httpserver/boardhandler"
@@ -60,10 +60,6 @@ func main() {
 		log.Fatal("failed to connect to mysql: ", pErr)
 	}
 
-	// TODO - add command for migration
-	mgr := migrator.New(cfg.MySql)
-	mgr.Up()
-
 	defer func() {
 		if err := mysql.Conn().Close(); err != nil {
 			fmt.Println("failed to close mysql", err)
@@ -87,13 +83,14 @@ func main() {
 
 	orgRepo := orgrepo.New(mysql)
 	orgSvc := orgservice.New(orgRepo)
-	orgValidation := orgvalidation.New(fileAdapter)
 	orgAdapter := orgadapter.New(orgRepo)
+	orgValidation := orgvalidation.New(fileAdapter, orgAdapter)
 	orgHandler := orghandler.New(authSvc, cfg.Auth, orgSvc, orgValidation)
 
 	workspaceRepo := workspacerepo.New(mysql)
 	workspaceSvc := workspaceservice.New(workspaceRepo)
-	workspaceValidation := workspacevalidation.New(fileAdapter, orgAdapter)
+	workspaceAdapter := workspaceadapter.New(workspaceRepo)
+	workspaceValidation := workspacevalidation.New(fileAdapter, orgAdapter, workspaceAdapter)
 	workspaceHandler := workspacehandler.New(authSvc, cfg.Auth, workspaceSvc, workspaceValidation)
 
 	boardRepo := boardrepo.New(mysql)

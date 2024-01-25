@@ -45,15 +45,13 @@ go.work
 
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode
 
-
-.gitlab-ci.yml
 go.*
-/bin
-/config
+/cmd/bin
+/config/default.go
 config.yml
 /datasource/mysql/dbconfig.yml
-/datasource/mysql/migrator
 Makefile
+/uploads
 
 
 

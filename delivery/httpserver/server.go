@@ -66,6 +66,7 @@ func (s Server) Serve() error {
 	s.router.Static("/api-docs", "./delivery/httpserver/apidocs")
 
 	s.router.GET("/health-check", healthCheck)
+	s.router.GET("/current-time", currentUnixTime)
 
 	s.userHandler.SetUserRoutes(s.router)
 	s.fileHandler.SetFileRouters(s.router)

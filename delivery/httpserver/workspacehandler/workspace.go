@@ -44,6 +44,7 @@ func (h Handler) createWorkspace(c echo.Context) error {
 
 func (h Handler) getAllWorkspaceByOrganizationID(c echo.Context) error {
 
+	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
 	organizationID := c.QueryParam("organization_id")
 	if organizationID == "" {
 
@@ -60,17 +61,16 @@ func (h Handler) getAllWorkspaceByOrganizationID(c echo.Context) error {
 		})
 	}
 
-	req := param.UserWorkspaceGetAllRequest{OrganizationID: uint(orgID)}
+	req := param.UserWorkspaceGetAllRequest{OrganizationID: uint(orgID), UserID: claims.UserID}
 
 	if err := h.workspaceValidation.GetAllWorkspace(req); err != nil {
-		
+
 		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{
 			"message": err.Error(),
 		})
 	}
 
-	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
-	resp, err := h.workspaceservice.GetAllWorkspaceByOrganizationID(req, claims.UserID)
+	resp, err := h.workspaceservice.GetAllWorkspaceByOrganizationID(req)
 	if err != nil {
 
 		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{
@@ -82,6 +82,7 @@ func (h Handler) getAllWorkspaceByOrganizationID(c echo.Context) error {
 }
 
 func (h Handler) deleteWorkspaceByID(c echo.Context) error {
+	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
 
 	workspaceID, err := strconv.ParseUint(c.Param("workspace_id"), 10, 0)
 	if err != nil {
@@ -91,7 +92,16 @@ func (h Handler) deleteWorkspaceByID(c echo.Context) error {
 		})
 	}
 
-	if err := h.workspaceservice.DeleteWorkspaceByID(param.UserWorkspaceDeleteRequest{WorkspaceID: uint(workspaceID)}); err != nil {
+	req := param.UserWorkspaceDeleteRequest{WorkspaceID: uint(workspaceID), UserID: claims.UserID}
+
+	if vErr := h.workspaceValidation.DeleteWorkspace(req); vErr != nil {
+
+		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{
+			"message": "workspace id is not valid",
+		})
+	}
+
+	if err := h.workspaceservice.DeleteWorkspaceByID(req); err != nil {
 
 		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{
 			"message": err.Error(),

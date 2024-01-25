@@ -44,10 +44,10 @@ func (s Service) CreateWorkspace(req param.UserWorkspaceCreateRequest) (uint, er
 	return id, nil
 }
 
-func (s Service) GetAllWorkspaceByOrganizationID(req param.UserWorkspaceGetAllRequest, userID uint) ([]param.UserWorkspaceResponse, error) {
+func (s Service) GetAllWorkspaceByOrganizationID(req param.UserWorkspaceGetAllRequest) ([]param.UserWorkspaceResponse, error) {
 	op := "workspaceservice.GetAllWorkspaceByOrganizationID"
 
-	workspaces, err := s.repo.GetAllWorkspaceByOrganizationID(req.OrganizationID, userID)
+	workspaces, err := s.repo.GetAllWorkspaceByOrganizationID(req.OrganizationID, req.UserID)
 	if err != nil {
 
 		return nil,

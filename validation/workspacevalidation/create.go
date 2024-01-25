@@ -5,7 +5,6 @@ import (
 	"taskema/pkg/richerror"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
 // TODO - avatar existence use for every api, we shoude write it once
@@ -13,7 +12,7 @@ func (v Validation) CreateWorkspace(req param.UserWorkspaceCreateRequest) error 
 	op := "orgvalidation.CreateWorkspace"
 
 	vErr := validation.ValidateStruct(&req,
-		validation.Field(&req.Title, validation.Required, is.Alpha, validation.Length(3, 10)),
+		validation.Field(&req.Title, validation.Required, validation.Length(3, 10)),
 	)
 
 	if vErr != nil {

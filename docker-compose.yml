@@ -2,28 +2,32 @@ version: '3.7'
 
 services:
   golang:
-    image: emamagic/taskema:3.0
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     container_name: taskema
+    volumes:
+      - ./uploads:/go/src/app/uploads
+    restart: always
     depends_on:
       - mysql
 
   mysql:
-    image: mysql:8.0
-    ports:
-      - "3306:3306"
+    image: mysql:latest
     container_name: mysql_db
     volumes:
-      - dbdata:/var/lib/mysql
+      - ./dbdata:/var/lib/taskema/mysql
     restart: always
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     environment:
-      MYSQL_ROOT_PASSWORD: gameappRoo7t0lk2o20
-      MYSQL_DATABASE: gameapp_db
-      MYSQL_USER: gameapp
-      MYSQL_PASSWORD: gameappt0lk2o20
+      MYSQL_ROOT_PASSWORD: taskemaappRoo7t0lk2o20
+      MYSQL_DATABASE: taskemaapp_db
+      MYSQL_USER: taskemaapp
+      MYSQL_PASSWORD: taskemaappt0lk2o20
 
 
 volumes:
   dbdata:
+  uploads:

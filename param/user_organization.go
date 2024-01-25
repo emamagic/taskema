@@ -2,7 +2,6 @@ package param
 
 import (
 	"taskema/entity"
-	"time"
 )
 
 type UserOrganizationCreateRequest struct {
@@ -12,20 +11,21 @@ type UserOrganizationCreateRequest struct {
 }
 
 type UserOrganizationGetAllRequest struct {
-	UserID uint `json:"user_id"`
+	UserID uint 
 }
 
 type UserOrganizationDeleteRequest struct {
+	UserID         uint 
 	OrganizationID uint `json:"organization_id"`
 }
 
 type UserOrganizationResponse struct {
-	ID            uint      `json:"id"`
-	Title         string    `json:"title"`
-	Avatar        *string   `json:"avatar"`
-	CreatorUserID uint      `json:"creator_user_id"`
-	CreateAt      time.Time `json:"create_at"`
-	UpdateAt      time.Time `json:"update_at"`
+	ID            uint    `json:"id"`
+	Title         string  `json:"title"`
+	Avatar        *string `json:"avatar"`
+	CreatorUserID uint    `json:"creator_user_id"`
+	CreateAt      int64   `json:"create_at"`
+	UpdateAt      int64   `json:"update_at"`
 }
 
 func OrganizationFromEntities(entities []entity.Organization) []UserOrganizationResponse {
@@ -37,8 +37,8 @@ func OrganizationFromEntities(entities []entity.Organization) []UserOrganization
 			Title:         org.Title,
 			Avatar:        org.Avatar,
 			CreatorUserID: org.CreatorUserID,
-			CreateAt:      org.CreateAt,
-			UpdateAt:      org.UpdateAt,
+			CreateAt:      org.CreateAt.Unix(),
+			UpdateAt:      org.UpdateAt.Unix(),
 		}
 		list = append(list, resp)
 	}

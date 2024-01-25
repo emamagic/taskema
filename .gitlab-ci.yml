@@ -1,0 +1,25 @@
+build:
+  before_script:
+    - echo "hello"
+# stages:
+#   - build
+#   - deploy
+
+# variables:
+#   DOCKER_REGISTRY: $CI_REGISTRY
+#   IMAGE_NAME: $CI_REGISTRY_IMAGE/your-app-name
+
+# before_script:
+#   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $DOCKER_REGISTRY
+
+# build:
+#   stage: build
+#   script:
+#     - docker build -t $IMAGE_NAME .
+#     - docker push $IMAGE_NAME
+
+# deploy:
+#   stage: deploy
+#   script:
+#     - docker-compose pull
+#     - docker-compose up -d
