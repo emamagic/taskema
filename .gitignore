@@ -50,8 +50,8 @@ go.work
 #config.yml
 #/datasource/mysql/dbconfig.yml
 #go.*
+#/uploads
 Makefile
-/uploads
 
 
 
