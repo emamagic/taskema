@@ -28,7 +28,7 @@ build:
     - docker push $CI_REGISTRY/$IMAGE_NAME
 
 deploy:
-  image: ubuntu:latest
+  image: alpine:latest
   stage: deploy
   only:
     - main
