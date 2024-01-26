@@ -35,16 +35,11 @@ deploy:
   before_script:
   - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
   - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config;
-  - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-  - echo "$SSH_PUBLIC_KEY" | base64 -d > ~/.ssh/id_rsa.pub
-  - chmod 700 ~/.ssh;
-  - chmod 600 ~/.ssh/id_rsa;
-  - chmod 764 ~/.ssh/id_rsa.pub;
-  - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-  - chmod 600 ~/.ssh/known_hosts;
+  - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
 
   script:
     - ssh -v -p $SSH_PORT $SSH_USER@$SSH_HOST "echo hi"
