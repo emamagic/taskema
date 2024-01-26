@@ -10,6 +10,9 @@ services:
     container_name: taskema
     volumes:
       - ./uploads:/go/src/app/uploads
+      - "/etc/letsencrypt/live/taskema.ir/fullchain.pem:/etc/taskema.ir/ssl/fullchain.pem"
+      - "/etc/letsencrypt/live/taskema.ir/privkey.pem:/etc/taskema.ir/ssl/privkey.pem"
+
     restart: always
     depends_on:
       - mysql

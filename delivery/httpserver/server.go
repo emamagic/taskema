@@ -76,7 +76,7 @@ func (s Server) Serve() error {
 	s.boardHandler.SetupBoardRoutes(s.router)
 	s.taskhandler.SetupTaskRoutes(s.router)
 
-	return s.router.Start(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port))
+	return s.router.StartTLS(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port), "/etc/taskema.ir/ssl/fullchain.pem", "/etc/taskema.ir/ssl/privkey.pem")
 }
 
 func (s Server) Router() *echo.Echo {
