@@ -28,19 +28,18 @@ build:
     - docker push $CI_REGISTRY/$IMAGE_NAME
 
 deploy:
-  image: ubuntu:latest
+  image: apline:latest
   stage: deploy
   only:
     - main
   before_script:
-    - apt-get -yq update
-    - apt-get -yqq install ssh
-    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh/
-    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan $VM_IPADDRESS >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
  
   script:
     - ssh -v -p $SSH_PORT $SSH_USER@$SSH_HOST "echo hi"
