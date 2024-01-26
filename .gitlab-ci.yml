@@ -28,18 +28,17 @@ build:
     - docker push $CI_REGISTRY/$IMAGE_NAME
 
 deploy:
-  image: alpine:latest
+  image: ubuntu:latest
   stage: deploy
   only:
     - main
   before_script:
-  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -v -
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
  
   script:
     - ssh -v -p $SSH_PORT $SSH_USER@$SSH_HOST "echo hi"
