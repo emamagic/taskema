@@ -1,4 +1,4 @@
-FROM golang:1.21.4-alpine AS build
+FROM golang:1.21.6-alpine3.19 AS build
 WORKDIR /go/src/app
 
 COPY . .
@@ -10,7 +10,7 @@ RUN go build -o cmd/bin/main cmd/main.go
 RUN go install github.com/rubenv/sql-migrate/...@latest
 ADD https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz /usr/local/bin/
 
-FROM alpine:3.15
+FROM alpine:3.19
 
 WORKDIR /go/src/app
 
@@ -29,10 +29,6 @@ RUN rm /usr/local/bin/dockerize-linux-amd64-v0.6.1.tar.gz
 
 EXPOSE 8080
 
-CMD ["dockerize", \
-    "-wait", "tcp://mysql:3306", \
-    "-timeout", "30s", \ 
-    "sh", "-c", \
-    "sql-migrate up -env=production -config=/go/src/app/datasource/mysql/dbconfig.yml && /go/src/app/cmd/bin/main"]
+CMD ["dockerize", "-wait", "tcp://mysql:3306","-timeout", "30s", "sh", "-c", "sql-migrate up -env=production -config=/go/src/app/datasource/mysql/dbconfig.yml && /go/src/app/cmd/bin/main"]
 
 

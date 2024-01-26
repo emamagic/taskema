@@ -2,7 +2,9 @@ version: '3.7'
 
 services:
   golang:
-    image: registry.taskema.ir/taskema/taskema_back_go:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     container_name: taskema
@@ -15,6 +17,8 @@ services:
   mysql:
     image: mysql:latest
     container_name: mysql_db
+    ports:
+      - "3306:3306"
     volumes:
       - ./dbdata:/var/lib/taskema/mysql
     restart: always
