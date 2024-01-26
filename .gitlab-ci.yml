@@ -42,6 +42,7 @@ deploy:
   - chmod 644 ~/.ssh/known_hosts
  
   script:
-    - ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
+    - ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST "echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin &&
+     cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
   after_script:
     - rm -rf ~/.ssh
