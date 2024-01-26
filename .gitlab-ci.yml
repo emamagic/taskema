@@ -8,6 +8,7 @@ stages:
 variables:
   IMAGE_NAME: $GITLAB_GROUP/$CI_PROJECT_NAME:latest
 
+
 build:
   stage: build
   only:
@@ -17,27 +18,30 @@ build:
     - name: docker:25.0.1-dind
       alias: docker
   variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_DRIVER: overlay2
-  before_script:
+      DOCKER_HOST: tcp://docker:2375
+      DOCKER_TLS_CERTDIR: ""
+      DOCKER_DRIVER: overlay2
+  before_script: 
     - echo $PAT | docker login $CI_REGISTRY -u $GITLAB_USER_LOGIN --password-stdin
   script:
     - docker build -t $CI_REGISTRY/$IMAGE_NAME .
     - docker push $CI_REGISTRY/$IMAGE_NAME
 
 deploy:
-  image: ubuntu:latest
+  image: alpine:latest
   stage: deploy
   only:
     - main
   before_script:
-    - apt-get -yq update
-    - apt-get -yqq install ssh
-    - install -m 600 -D /dev/null ~/.ssh/id_rsa
-    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-    - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+ 
   script:
-    - ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose pull && docker-compose up -d && exit"
+    - ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
   after_script:
     - rm -rf ~/.ssh
