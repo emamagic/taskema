@@ -37,6 +37,7 @@ deploy:
     - apt-get -yqq install ssh
     - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
     - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh/
     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
     - ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
  
