@@ -47,6 +47,6 @@ deploy:
   - chmod 600 ~/.ssh/known_hosts;
 
   script:
-    - ssh -v -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $WORK_DIR && docker-compose down && docker-compose pull && docker-compose up -d && exit"
+    - ssh -v -p $SSH_PORT $SSH_USER@$SSH_HOST "echo hi"
   after_script:
     - rm -rf ~/.ssh
