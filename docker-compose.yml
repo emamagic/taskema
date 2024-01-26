@@ -27,7 +27,6 @@ services:
       MYSQL_USER: taskemaapp
       MYSQL_PASSWORD: taskemaappt0lk2o20
 
-
 volumes:
   dbdata:
   uploads:
