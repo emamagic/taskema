@@ -15,12 +15,14 @@ import (
 	"taskema/delivery/httpserver"
 	"taskema/delivery/httpserver/authhandler"
 	"taskema/delivery/httpserver/boardhandler"
+	"taskema/delivery/httpserver/columnhandler"
 	"taskema/delivery/httpserver/filehandler"
 	"taskema/delivery/httpserver/orghandler"
 	"taskema/delivery/httpserver/taskhandler"
 	"taskema/delivery/httpserver/userhandler"
 	"taskema/delivery/httpserver/workspacehandler"
 	"taskema/repository/boardrepo"
+	"taskema/repository/columnrepo"
 	"taskema/repository/filerepo"
 	"taskema/repository/orgrepo"
 	"taskema/repository/taskrepo"
@@ -28,6 +30,7 @@ import (
 	"taskema/repository/workspacerepo"
 	"taskema/service/authservice"
 	"taskema/service/boardservice"
+	"taskema/service/columnservice"
 	"taskema/service/fileservice"
 	"taskema/service/hashingservice"
 	"taskema/service/orgservice"
@@ -97,11 +100,15 @@ func main() {
 	boardSvc := boardservice.New(boardRepo)
 	boardHandler := boardhandler.New(authSvc, cfg.Auth, boardSvc)
 
+	columnRepo := columnrepo.New(mysql)
+	columnSvc := columnservice.New(columnRepo)
+	columnHandler := columnhandler.New(authSvc, cfg.Auth, columnSvc)
+
 	taskRepo := taskrepo.New(mysql)
 	taskSvc := taskservice.New(taskRepo)
 	taskHandler := taskhandler.New(authSvc, cfg.Auth, taskSvc)
 
-	server := httpserver.New(cfg.Server, userhandler, filehandler, authhandler, orgHandler, workspaceHandler, boardHandler, taskHandler)
+	server := httpserver.New(cfg.Server, userhandler, filehandler, authhandler, orgHandler, workspaceHandler, boardHandler, taskHandler, columnHandler)
 
 	ch := make(chan error, 1)
 	go func() {

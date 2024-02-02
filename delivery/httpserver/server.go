@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"taskema/delivery/httpserver/authhandler"
 	"taskema/delivery/httpserver/boardhandler"
+	"taskema/delivery/httpserver/columnhandler"
 	"taskema/delivery/httpserver/filehandler"
 	"taskema/delivery/httpserver/orghandler"
 	"taskema/delivery/httpserver/taskhandler"
@@ -30,6 +31,7 @@ type Server struct {
 	workspaceHandler workspacehandler.Handler
 	boardHandler     boardhandler.Handler
 	taskhandler      taskhandler.Handler
+	columnhandler    columnhandler.Handler
 }
 
 func New(
@@ -41,6 +43,7 @@ func New(
 	workspaceHandler workspacehandler.Handler,
 	boardHandler boardhandler.Handler,
 	taskhandler taskhandler.Handler,
+	columnhandler columnhandler.Handler,
 ) Server {
 	return Server{
 		cfg:              cfg,
@@ -52,6 +55,7 @@ func New(
 		workspaceHandler: workspaceHandler,
 		boardHandler:     boardHandler,
 		taskhandler:      taskhandler,
+		columnhandler:    columnhandler,
 	}
 }
 
@@ -73,10 +77,12 @@ func (s Server) Serve() error {
 	s.authHandler.SetAuthRouters(s.router)
 	s.orgHandler.SetupOrgRoutes(s.router)
 	s.workspaceHandler.SetupWorkspaceRoutes(s.router)
-	s.boardHandler.SetupBoardRoutes(s.router)
+	// s.boardHandler.SetupBoardRoutes(s.router)
+	s.columnhandler.SetupColumnRoutes(s.router)
 	s.taskhandler.SetupTaskRoutes(s.router)
 
-	return s.router.StartTLS(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port), "/etc/taskema.ir/ssl/fullchain.pem", "/etc/taskema.ir/ssl/privkey.pem")
+	return s.router.Start(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port))
+	//return s.router.StartTLS(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port), "/etc/taskema.ir/ssl/fullchain.pem", "/etc/taskema.ir/ssl/privkey.pem")
 }
 
 func (s Server) Router() *echo.Echo {
