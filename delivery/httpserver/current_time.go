@@ -9,6 +9,6 @@ import (
 
 func currentUnixTime(c echo.Context) error {
 	return c.JSON(http.StatusOK, echo.Map{
-		"time": time.Now().Unix(),
+		"current-time": time.Now().Unix(),
 	})
 }

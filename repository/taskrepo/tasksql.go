@@ -19,7 +19,7 @@ func New(db *mysql.MYSQL) Task {
 func (repo *taskSqlRepo) CreateTask(task entity.Task) (uint, error) {
 	op := "tasksql.CreateTask"
 
-	result, err := repo.db.Conn().Exec("INSERT INTO tasks (title, avatar, creator_user_id, description, board_id, assigned_user_id, due_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+	result, err := repo.db.Conn().Exec("INSERT INTO tasks (title, avatar, creator_user_id, description, column_id, assigned_user_id, due_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
 		task.Title, task.Avatar, task.CreatorUserID, task.Description, task.ColumnID, task.AssignedUserID, task.DueDate)
 	if err != nil {
 
@@ -35,10 +35,10 @@ func (repo *taskSqlRepo) CreateTask(task entity.Task) (uint, error) {
 	return uint(id), nil
 }
 
-func (repo *taskSqlRepo) GetAllTaskByBoardID(boardID uint) ([]entity.Task, error) {
-	op := "tasksql.GetAllTaskByBoardID"
+func (repo *taskSqlRepo) GetAllTaskByColumnID(columnID uint) ([]entity.Task, error) {
+	op := "tasksql.GetAllTaskBycolumnID"
 
-	rows, qErr := repo.db.Conn().Query("SELECT * FROM tasks WHERE board_id = ?", boardID)
+	rows, qErr := repo.db.Conn().Query("SELECT * FROM tasks WHERE column_id = ?", columnID)
 	if qErr != nil {
 
 		return nil,

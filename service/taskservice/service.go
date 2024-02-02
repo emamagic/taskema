@@ -8,7 +8,7 @@ import (
 
 type Repository interface {
 	CreateTask(task entity.Task) (uint, error)
-	GetAllTaskByBoardID(boardID uint) ([]entity.Task, error)
+	GetAllTaskByColumnID(columnID uint) ([]entity.Task, error)
 	DeleteTaskByID(taskID uint) error
 }
 
@@ -47,10 +47,10 @@ func (s Service) CreateTask(req param.UserTaskCreateRequest) (uint, error) {
 	return id, nil
 }
 
-func (s Service) GetAllTaskByBoardID(req param.UserTaskGetAllRequest) ([]param.UserTaskResponse, error) {
-	op := "taskservice.GetAllTaskByBoardID"
+func (s Service) GetAllTaskByColumnID(req param.UserTaskGetAllRequest) ([]param.UserTaskResponse, error) {
+	op := "taskservice.GetAllTaskByColumnID"
 
-	tasks, err := s.repo.GetAllTaskByBoardID(req.UserID)
+	tasks, err := s.repo.GetAllTaskByColumnID(req.UserID)
 	if err != nil {
 
 		return nil,

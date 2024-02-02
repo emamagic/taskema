@@ -15,8 +15,8 @@ type UserTaskCreateRequest struct {
 }
 
 type UserTaskGetAllRequest struct {
-	UserID      uint `json:"user_id"`
-	WorkspaceID uint `json:"workspace_id"`
+	UserID   uint
+	ColumnID uint `json:"column_id"`
 }
 
 type UserTaskDeleteRequest struct {

@@ -34,9 +34,9 @@ func (h Handler) createTask(c echo.Context) error {
 	})
 }
 
-func (h Handler) getAllTaskByBoardID(c echo.Context) error {
+func (h Handler) getAllTaskByColumnID(c echo.Context) error {
 
-	boardID, err := strconv.ParseUint(c.QueryParam("board_id"), 10, 0)
+	columnID, err := strconv.ParseUint(c.QueryParam("column_id"), 10, 0)
 	if err != nil {
 
 		return echo.NewHTTPError(http.StatusBadRequest, echo.Map{
@@ -45,9 +45,9 @@ func (h Handler) getAllTaskByBoardID(c echo.Context) error {
 	}
 
 	claims := c.Get(h.authCfg.ContextKey).(*authservice.Claims)
-	resp, err := h.taskservice.GetAllTaskByBoardID(param.UserTaskGetAllRequest{
-		WorkspaceID: uint(boardID),
-		UserID:  claims.UserID,
+	resp, err := h.taskservice.GetAllTaskByColumnID(param.UserTaskGetAllRequest{
+		ColumnID: uint(columnID),
+		UserID:   claims.UserID,
 	})
 	if err != nil {
 

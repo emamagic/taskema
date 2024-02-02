@@ -47,11 +47,11 @@ go.work
 
 #/cmd/bin
 #/config/default.go
-#config.yml
-#/datasource/mysql/dbconfig.yml
-#go.*
 #/uploads
+config.yml
+/datasource/mysql/dbconfig.yml
+go.*
 Makefile
-
+docker-compose.yml
 
 
