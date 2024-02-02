@@ -81,8 +81,7 @@ func (s Server) Serve() error {
 	s.columnhandler.SetupColumnRoutes(s.router)
 	s.taskhandler.SetupTaskRoutes(s.router)
 
-	return s.router.Start(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port))
-	//return s.router.StartTLS(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port), "/etc/taskema.ir/ssl/fullchain.pem", "/etc/taskema.ir/ssl/privkey.pem")
+	return s.router.StartTLS(fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port), "/etc/taskema.ir/ssl/fullchain.pem", "/etc/taskema.ir/ssl/privkey.pem")
 }
 
 func (s Server) Router() *echo.Echo {
